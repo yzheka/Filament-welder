@@ -19,13 +19,15 @@ Prefs prefs=Prefs::get();
 byte editVal=0;
 bool editing=false;
 
-void printCurrentTemp(float target){
-  float temp=heaterController.readTemp();
+float printCurrentTemp(float target)
+{
+  float temp = heaterController.readTemp();
   String prefix;
   if(temp>=100&&target>=100)prefix=" ";
   else if(temp<100&&target<100)prefix="  ";
   else prefix=" ";
   lcdController.write(5,prefix+String(temp,0)+"C>"+String(target,0)+"C",2);
+  return temp;
 }
 
 void unloadFilament(){
@@ -177,20 +179,26 @@ void cooldown(){
   if(!filamentStatus.isLoaded())return;
   heaterController.setFanEnabled(true);
   lcdController.write(3,"Cooling...");
-  while (heaterController.readTemp()>COOLDOWN_TEMP){
-    if(!filamentStatus.isLoaded())return;
-    printCurrentTemp(COOLDOWN_TEMP);
-    auto temp=heaterController.readTemp();
-    if(temp<prefs.getPreheatTemp()-50&&temp>100){
-      auto dist=rev?SWING_DIST:-SWING_DIST;
-      if(pull){
-        stepperController.unload(SWING_SPEED,SWING_DIST/2);
-        pull=false;
+  float temp;
+  do
+  {
+    if (!filamentStatus.isLoaded())
+      return;
+    temp = printCurrentTemp(COOLDOWN_TEMP);
+    if (temp < prefs.getPreheatTemp() - 50 && temp > 150)
+    {
+      auto dist = rev ? SWING_DIST : -SWING_DIST;
+      if (pull)
+      {
+        stepperController.unload(SWING_SPEED, SWING_DIST / 2);
+        pull = false;
       }
-      stepperController.unload(SWING_SPEED,dist);
-      rev=!rev;
-    }else stepperController.stop();
-  }
+      stepperController.unload(SWING_SPEED, dist);
+      rev = !rev;
+    }
+    else
+      stepperController.stop();
+  } while (temp > COOLDOWN_TEMP);
   heaterController.setFanEnabled(false);
 }
 

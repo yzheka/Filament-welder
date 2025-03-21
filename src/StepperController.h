@@ -21,8 +21,8 @@ public:
     StepperController():
     stepperLeft(200, MOTOR1_STEP_PIN, MOTOR1_DIR_PIN, MOTOR1_ENABLE_PIN),
     stepperRight(200, MOTOR2_STEP_PIN, MOTOR2_DIR_PIN, MOTOR2_ENABLE_PIN){
-        stepperLeft.setAcceleration(30000);
-        stepperRight.setAcceleration(30000);
+        stepperLeft.setAcceleration(MOTOR_ACCELERATION);
+        stepperRight.setAcceleration(MOTOR_ACCELERATION);
         stop();
     }
 

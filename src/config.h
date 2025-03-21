@@ -21,14 +21,15 @@
 #define ENDSTOP_RIGHT_PIN                        15
 
 #define MIN_TEMP                                 150
-#define MAX_TEMP                                 280
-#define COOLDOWN_TEMP                            60
+#define MAX_TEMP 320
+#define COOLDOWN_TEMP 80
 #define MAX_SPEED                                300.0*STEPS_PER_MM
 #define WELD_SPEED                               2.0*STEPS_PER_MM
 #define WELD_DIST_MIN                            1.0*STEPS_PER_MM
 #define WELD_DIST_MAX                            15.0*STEPS_PER_MM
-#define SWING_SPEED                              30.0*STEPS_PER_MM
-#define SWING_DIST                               4.0*STEPS_PER_MM
+#define SWING_SPEED 60.0 * STEPS_PER_MM
+#define SWING_DIST 50.0 * STEPS_PER_MM
+#define MOTOR_ACCELERATION 60000
 
 #define CFG_PID_P                                47.276
 #define CFG_PID_I                                13.132
